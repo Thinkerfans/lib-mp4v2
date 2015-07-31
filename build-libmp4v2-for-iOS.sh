@@ -1,13 +1,13 @@
 #!/bin/sh
 
-IOS_BASE_SDK=8.2
+IOS_BASE_SDK=8.4
 SOURCE="mp4v2-2.0.0"
 
 ROOT=`pwd`
 FAT="$ROOT/fat"
 THIN="$ROOT/thin"
 
-ARCHS="i386 x86_64 armv7 armv7s arm64 "
+ARCHS="i386 x86_64 armv7 armv7s arm64"
 #ARCHS="i386 x86_64"
 CONFIGURE_FLAGS="--disable-gch --disable-debug --disable-util \
                   --enable-shared=no"
@@ -52,6 +52,27 @@ do
   SDKROOT=$DEVROOT/SDKs/$PLATFORM$IOS_BASE_SDK.sdk
   CFLAGS="-arch $ARCH $SIMULATOR -pipe -no-cpp-precomp -isysroot $SDKROOT -I$SDKROOT/usr/include/"
 
+  if [ ! -d "$SDKROOT" ] ; then
+    echo " "
+    echo "error: SDK doesnt exists for ${IOS_BASE_SDK} in folder ${SDKROOT}"
+    echo "please update the 'IOS_BASE_SDK' in the build-...sh"
+
+    echo "Here are the existing ones:"
+    for entry in "$DEVROOT/SDKs"/*
+    do
+      echo "$entry"
+    done
+    
+    exit
+  fi
+
+  if [ ! -d "$ROOT/$SOURCE" ] ; then
+    echo " "
+    echo "error: the mp4v2-2.0.0 source folder doesnt exists"
+    echo "please unpack the 'mp4v2-2.0.0.tar.bz2'"
+    exit
+  fi
+  
   export CFLAGS="$CFLAGS"
 
   export CXX="llvm-g++"
