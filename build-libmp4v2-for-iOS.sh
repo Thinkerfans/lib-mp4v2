@@ -1,6 +1,6 @@
 #!/bin/sh
 
-IOS_BASE_SDK=8.2
+IOS_BASE_SDK=10.1
 SOURCE="mp4v2-2.0.0"
 
 ROOT=`pwd`
@@ -63,10 +63,8 @@ do
      export LDFLAGS="-L$SDKROOT/usr/lib/"
  else
      export LD=$DEVROOT/usr/bin/ld
-     export AR=$DEVROOT/usr/bin/ar
      export AS=$DEVROOT/usr/bin/as
      export NM=$DEVROOT/usr/bin/nm
-     export RANLIB=$DEVROOT/usr/bin/ranlib
      export LDFLAGS="-L$SDKROOT/usr/lib/"
      export LIBTOOL=$DEVROOT/usr/bin/libtool
      export LIPO=$DEVROOT/usr/bin/lipo
