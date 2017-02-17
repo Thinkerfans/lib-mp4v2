@@ -1,6 +1,6 @@
 #!/bin/sh
 
-IOS_BASE_SDK=10.1
+#IOS_BASE_SDK=10.1
 SOURCE="mp4v2-2.0.0"
 
 ROOT=`pwd`
@@ -49,7 +49,9 @@ do
   fi
 
   DEVROOT=`xcode-select -p`/"Platforms/$PLATFORM.platform/Developer"
-  SDKROOT=$DEVROOT/SDKs/$PLATFORM$IOS_BASE_SDK.sdk
+  #SDKROOT=$DEVROOT/SDKs/$PLATFORM$IOS_BASE_SDK.sdk
+  SDKROOT=`(xcrun --sdk iphoneos --show-sdk-path)`
+  
   CFLAGS="-arch $ARCH $SIMULATOR -pipe -no-cpp-precomp -isysroot $SDKROOT -I$SDKROOT/usr/include/"
 
   export CFLAGS="$CFLAGS"
