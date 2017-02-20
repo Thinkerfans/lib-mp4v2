@@ -1,6 +1,6 @@
 #!/bin/sh
 
-IOS_BASE_SDK=8.2
+#IOS_BASE_SDK=10.2
 SOURCE="mp4v2-2.0.0"
 
 ROOT=`pwd`
@@ -8,6 +8,7 @@ FAT="$ROOT/fat"
 THIN="$ROOT/thin"
 
 ARCHS="i386 x86_64 armv7 armv7s arm64 "
+#ARCHS="i386"
 #ARCHS="i386 x86_64"
 CONFIGURE_FLAGS="--disable-gch --disable-debug --disable-util \
                   --enable-shared=no"
@@ -49,7 +50,11 @@ do
   fi
 
   DEVROOT=`xcode-select -p`/"Platforms/$PLATFORM.platform/Developer"
-  SDKROOT=$DEVROOT/SDKs/$PLATFORM$IOS_BASE_SDK.sdk
+  XCRUN_SDK=`echo $PLATFORM | tr '[:upper:]' '[:lower:]'`
+  #SDKROOT=$DEVROOT/SDKs/$PLATFORM$IOS_BASE_SDK.sdk
+  SDKROOT=`(xcrun --sdk $XCRUN_SDK --show-sdk-path)`
+  
+  
   CFLAGS="-arch $ARCH $SIMULATOR -pipe -no-cpp-precomp -isysroot $SDKROOT -I$SDKROOT/usr/include/"
 
   export CFLAGS="$CFLAGS"
@@ -63,10 +68,8 @@ do
      export LDFLAGS="-L$SDKROOT/usr/lib/"
  else
      export LD=$DEVROOT/usr/bin/ld
-     export AR=$DEVROOT/usr/bin/ar
      export AS=$DEVROOT/usr/bin/as
      export NM=$DEVROOT/usr/bin/nm
-     export RANLIB=$DEVROOT/usr/bin/ranlib
      export LDFLAGS="-L$SDKROOT/usr/lib/"
      export LIBTOOL=$DEVROOT/usr/bin/libtool
      export LIPO=$DEVROOT/usr/bin/lipo
